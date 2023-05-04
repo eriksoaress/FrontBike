@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import NewBike from './pages/bike/NewBike.jsx'
 import './index.css'
 
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/hello",
     element: <div>Hello world!</div>,
+  },
+  {
+    path: "/new",
+    element: <NewBike />,
   },
   {
     path: "/bike",

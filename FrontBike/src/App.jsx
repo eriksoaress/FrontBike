@@ -25,6 +25,7 @@ function App() {
         </button>
 
         <Link to='/' ><button color="inherit">Home </button></Link>
+        <Link to='/new' ><button color="inherit">Create Bike </button></Link>
         <Link to='/hello'><button color="inherit">Hello</button></Link>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
