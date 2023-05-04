@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText } from '@mui/material'
+import { Navigate } from 'react-router-dom'
 
 export default function NewBike() {
 
@@ -9,6 +10,7 @@ export default function NewBike() {
 
     const [mensagem, setMensagem] = useState('')
     const [open, setOpen] = useState()
+    const [bikeCreated, setBikeCreated] = useState(false)
 
     
     const modelValidation = () => {
@@ -64,6 +66,7 @@ export default function NewBike() {
                 //listTeams()
                 setMensagem('Bike cadastrada com sucesso')
                 setOpen(true)
+                setBikeCreated(true)
             }
         }).catch(ex => {
             setMensagem('Erro ao cadastrar bike')
@@ -114,6 +117,8 @@ export default function NewBike() {
                     onClose={handleClose}
                     message={mensagem}
                 />
+
+                {bikeCreated && <Navigate to='/bike' /> }
 
             </Box>
     )
