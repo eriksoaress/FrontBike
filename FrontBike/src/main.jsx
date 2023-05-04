@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import ListBikes from './pages/bike/ListBikes.jsx';
+import InteractiveList from './pages/bike/InteractiveList.jsx';
 
 const router = createBrowserRouter([
   {
