@@ -5,11 +5,12 @@ import NewBike from './pages/bike/NewBike.jsx'
 import './index.css'
 
 
-
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+
+import ListBikes from './pages/bike/ListBikes.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,11 +22,14 @@ const router = createBrowserRouter([
     path: "/hello",
     element: <div>Hello world!</div>,
   },
-
   {
     path: "/new",
     element: <NewBike />,
-  }
+  },
+  {
+    path: "/bike",
+    element: <ListBikes />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
