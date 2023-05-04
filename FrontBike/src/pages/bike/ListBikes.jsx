@@ -25,6 +25,18 @@ function ListBikes() {
 const [data, setData] = useState([])
 
 
+
+async function deleteBikes(id) {
+    fetch('http://localhost:8080/bike/'+id, {
+        method: 'DELETE'    
+    })
+    
+}
+
+
+
+
+
 async function listBikes() {
     let listBikes = await fetch('http://localhost:8080/bike', {
         method: 'GET'
@@ -39,7 +51,7 @@ async function listBikes() {
         return []
     })
     console.log(listBikes)
-    setData(listBikes)
+    setData(listBikes.content)
 }
 
 
@@ -73,7 +85,7 @@ useEffect(() => {
 
         <ListItem
         secondaryAction={
-          <IconButton edge="end" aria-label="delete">
+          <IconButton edge="end" aria-label="delete" onClick={() => deleteBikes(bike.id)}>
             <DeleteIcon color = "error"/>
           </IconButton>
         }
