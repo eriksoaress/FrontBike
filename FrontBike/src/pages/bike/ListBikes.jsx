@@ -39,7 +39,7 @@ async function listBikes() {
         return []
     })
     console.log(listBikes)
-    setData(listBikes)
+    setData(listBikes.content)
 }
 
 
@@ -86,8 +86,8 @@ useEffect(() => {
 
         <ListItemText
           sx={{ color:"rgba(76, 76, 76)" }}
-          primary= {bike.type+": " + bike.status}
-          secondary={"R$: " + bike.price}
+          primary= {bike.type+": " + bike.model}
+          secondary={"R$: " + bike.pricePHour}
         />
       </ListItem>
 

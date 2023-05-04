@@ -50,7 +50,7 @@ export default function NewBike() {
         const data = {
             'model': model,
             'type': type,
-            'price_p_hour': pricePerHour
+            'pricePHour': pricePerHour
         }
 
         fetch('http://localhost:8080/bike', {
