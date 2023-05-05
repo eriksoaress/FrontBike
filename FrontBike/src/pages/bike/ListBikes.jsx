@@ -115,8 +115,8 @@ useEffect(() => {
 
         <ListItemText
           sx={{ color:"rgba(76, 76, 76)" }}
-          primary= {bike.model+": " + bike.status}
-          secondary={"R$: " + bike.price}
+          primary= {bike.type+": " + bike.model}
+          secondary={"R$: " + bike.pricePHour}
         />
       </ListItem>
 
