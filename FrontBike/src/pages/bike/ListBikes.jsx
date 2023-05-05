@@ -9,33 +9,33 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
   }));
 
-
 function ListBikes() {
 
-
-
 const [data, setData] = useState([])
+const [page, setPage] = useState(0);
+const [pages, setPages] = useState();
+
+const currentBikes = data;
 
 
 
-async function deleteBikes(id) {
-    fetch('http://localhost:8080/bike/'+id, {
+async function deleteBikes(id,currentPage) {
+    await fetch('http://localhost:8080/bike/'+id, {
         method: 'DELETE'    
-    })
+    });
+
+    console.log(page);
+    await listBikesPaginator(currentPage);
     
 }
-
-
-
-
 
 async function listBikes() {
     let listBikes = await fetch('http://localhost:8080/bike', {
@@ -50,42 +50,59 @@ async function listBikes() {
         console.log(ex)
         return []
     })
-    console.log(listBikes)
-    setData(listBikes.content)
+
+    
+    
+    setPages(listBikes.totalPages);
+    setData(listBikes.content);
+
+
+
 }
 
+
+async function listBikesPaginator(p) {
+    let listBikes = await fetch('http://localhost:8080/bike?page='+p, {
+        method: 'GET'
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json()
+        }
+        return []
+    }).catch(ex => {
+        //setMensagem('Erro ao listar times')
+        console.log(ex)
+        return []
+    })
+    
+    setData(listBikes.content);
+    setPage(listBikes.number)
+    setPages(listBikes.totalPages);
+
+
+}
 
 
 useEffect(() => {
     listBikes()
-}, [])
+}, []);
 
-  // aqui você pode adicionar ou remover itens da lista
+
 
   return (
-
-
-
     <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center"}}>
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
             List bikes
           </Typography>
 
-
-
           <Demo sx= {{width: "70%"}}>
             <List sx={{ color:"rgba(242, 242, 242)"}}>
-
-
                 
-      {data.map(bike => (
-        
-
-
+      {currentBikes.map(bike => (
 
         <ListItem
         secondaryAction={
-          <IconButton edge="end" aria-label="delete" onClick={() => deleteBikes(bike.id)}>
+          <IconButton edge="end" aria-label="delete" onClick={() => deleteBikes(bike.id,page)}>
             <DeleteIcon color = "error"/>
           </IconButton>
         }
@@ -98,22 +115,27 @@ useEffect(() => {
 
         <ListItemText
           sx={{ color:"rgba(76, 76, 76)" }}
-          primary= {bike.type+": " + bike.status}
+          primary= {bike.model+": " + bike.status}
           secondary={"R$: " + bike.price}
         />
       </ListItem>
 
-
       ))}
               
-               
-              
             </List>
+        
           </Demo>
+
+          <Stack spacing={2}>
+            <Pagination count={pages} shape="rounded" 
+            onChange={(e, p) => {
+
+                setPage(p-1);
+                listBikesPaginator(p-1);               
+            }}
+                />
+        </Stack>
     </Box>
-
-  
-
   );
 }
 
