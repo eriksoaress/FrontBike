@@ -11,6 +11,7 @@ import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { NavBar } from '../../components/NavBar';
 
 
 const Demo = styled('div')(({ theme }) => ({
@@ -90,6 +91,8 @@ useEffect(() => {
 
 
   return (
+    <>
+    <NavBar/>
     <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center"}}>
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
             List bikes
@@ -136,6 +139,7 @@ useEffect(() => {
                 />
         </Stack>
     </Box>
+    </>
   );
 }
 

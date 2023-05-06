@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText } from '@mui/material'
 import { Navigate } from 'react-router-dom'
+import { NavBar } from '../../components/NavBar'
 
 export default function NewBike() {
 
@@ -77,6 +78,8 @@ export default function NewBike() {
 
 
     return (
+        <>
+            <NavBar/>
             <Box
                 sx={{
                     mx: 'auto',
@@ -121,6 +124,7 @@ export default function NewBike() {
                 {bikeCreated && <Navigate to='/bike' /> }
 
             </Box>
+        </>
     )
 
 }
