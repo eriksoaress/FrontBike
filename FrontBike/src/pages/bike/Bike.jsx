@@ -1,9 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import { NavBar } from '../../components/NavBar';
+import { useParams } from 'react-router-dom';
 import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText } from '@mui/material'
-import { Navigate } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
 
-export default function NewBike() {
+const Demo = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+  }));
+
+export default function Bike() {
 
     const [model, setModel] = useState('model')
     const [type, setType] = useState('type')
@@ -11,7 +23,9 @@ export default function NewBike() {
 
     const [mensagem, setMensagem] = useState('')
     const [open, setOpen] = useState()
-    const [bikeCreated, setBikeCreated] = useState(false)
+    const [bikeUses, setUses] = useState([])
+
+    const { id } = useParams();
 
     
     const modelValidation = () => {
@@ -56,26 +70,46 @@ export default function NewBike() {
             'pricePHour': pricePerHour
         }
 
-        fetch('http://localhost:8080/bike', {
-            method: 'POST',
+        fetch('http://localhost:8080/bike/'+id, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         }).then(response => {
             if (response.status === 200) {
-                //listTeams()
-                setMensagem('Bike cadastrada com sucesso')
+                setMensagem('Bike atualizada com sucesso')
                 setOpen(true)
-                setBikeCreated(true)
             }
         }).catch(ex => {
-            setMensagem('Erro ao cadastrar bike')
+            setMensagem('Erro ao atualizar bike')
             setOpen(true)
         })
 
     }
 
+    async function listUses() {
+        let listUses = await fetch('http://localhost:8000/bike'+id, {
+            method: 'GET'
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+            return []
+        }).catch(ex => {
+            console.log(ex)
+            return []
+        })
+    
+        
+        setUses(listUses.content);
+    
+    
+    }
+
+    useEffect(() => {
+        listUses()
+    }, []);
 
     return (
         <>
@@ -121,9 +155,38 @@ export default function NewBike() {
                     message={mensagem}
                 />
 
-                {bikeCreated && <Navigate to='/list' /> }
-
             </Box>
+
+        <Box>
+            <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                List bikes
+            </Typography>
+
+            <Demo sx= {{width: "70%"}}>
+                <List sx={{ color:"rgba(242, 242, 242)"}}>
+                
+            {bikeUses.map(bike => (
+
+                <ListItem>
+                    <ListItemAvatar>
+
+                        <DirectionsBikeIcon style={{ color: "rgba(242, 159, 5)" }} />
+
+                    </ListItemAvatar>
+
+                    <ListItemText
+                    sx={{ color:"rgba(76, 76, 76)" }}
+                    primary= {bike.origem + " -> " + bike.destino + ": " + bike.status}
+                    secondary={bike.diaHoraInicio}
+                    />
+                </ListItem>
+
+            ))}
+              
+            </List>
+        
+          </Demo>
+        </Box>
         </>
     )
 

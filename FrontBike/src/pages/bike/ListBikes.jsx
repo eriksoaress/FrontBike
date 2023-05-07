@@ -47,7 +47,7 @@ async function listBikes() {
         }
         return []
     }).catch(ex => {
-        //setMensagem('Erro ao listar times')
+
         console.log(ex)
         return []
     })
