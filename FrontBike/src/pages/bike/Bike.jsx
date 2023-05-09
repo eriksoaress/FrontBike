@@ -89,7 +89,7 @@ export default function Bike() {
     }
 
     async function listUses() {
-        let listUses = await fetch('http://localhost:8000/bike'+id, {
+        let listUses = await fetch('http://localhost:8090/aluguel?id_bike='+id, {
             method: 'GET'
         }).then(response => {
             if (response.status === 200) {
@@ -101,9 +101,7 @@ export default function Bike() {
             return []
         })
     
-        
-        setUses(listUses.content);
-    
+        setUses(listUses);
     
     }
 
@@ -165,7 +163,7 @@ export default function Bike() {
             <Demo sx= {{width: "70%"}}>
                 <List sx={{ color:"rgba(242, 242, 242)"}}>
                 
-            {bikeUses.map(bike => (
+            {bikeUses && bikeUses.map(bike => (
 
                 <ListItem>
                     <ListItemAvatar>
@@ -176,7 +174,7 @@ export default function Bike() {
 
                     <ListItemText
                     sx={{ color:"rgba(76, 76, 76)" }}
-                    primary= {bike.origem + " -> " + bike.destino + ": " + bike.status}
+                    primary= {bike.origem + ": " + bike.status}
                     secondary={bike.diaHoraInicio}
                     />
                 </ListItem>

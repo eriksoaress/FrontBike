@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { NavBar } from '../../components/NavBar';
+import { Link } from 'react-router-dom';
 
 
 const Demo = styled('div')(({ theme }) => ({
@@ -101,8 +102,7 @@ useEffect(() => {
           <Demo sx= {{width: "70%"}}>
             <List sx={{ color:"rgba(242, 242, 242)"}}>
                 
-      {currentBikes.map(bike => (
-
+      {currentBikes && currentBikes.map(bike => (
         <ListItem
         secondaryAction={
           <IconButton edge="end" aria-label="delete" onClick={() => deleteBikes(bike.id,page)}>
@@ -115,14 +115,14 @@ useEffect(() => {
             <DirectionsBikeIcon style={{ color: "rgba(242, 159, 5)" }} />
 
         </ListItemAvatar>
-
+        <Link to={'/bike/'+bike.id}>
         <ListItemText
           sx={{ color:"rgba(76, 76, 76)" }}
           primary= {bike.type+": " + bike.model}
           secondary={"R$: " + bike.pricePHour}
         />
+        </Link>
       </ListItem>
-
       ))}
               
             </List>
