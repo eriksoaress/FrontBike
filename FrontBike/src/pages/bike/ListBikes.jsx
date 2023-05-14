@@ -27,8 +27,6 @@ const [pages, setPages] = useState();
 
 const currentBikes = data;
 
-
-
 async function deleteBikes(id,currentPage) {
     await fetch('http://localhost:8080/bike/'+id, {
         method: 'DELETE'    
@@ -52,16 +50,11 @@ async function listBikes() {
         console.log(ex)
         return []
     })
-
-    
     
     setPages(listBikes.totalPages);
     setData(listBikes.content);
 
-
-
 }
-
 
 async function listBikesPaginator(p) {
     let listBikes = await fetch('http://localhost:8080/bike?page='+p, {
@@ -81,15 +74,11 @@ async function listBikesPaginator(p) {
     setPage(listBikes.number)
     setPages(listBikes.totalPages);
 
-
 }
-
 
 useEffect(() => {
     listBikes()
 }, []);
-
-
 
   return (
     <>
