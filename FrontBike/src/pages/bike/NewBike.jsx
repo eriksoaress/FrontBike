@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText } from '@mui/material'
+import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText, Alert } from '@mui/material'
 import { Navigate } from 'react-router-dom'
 import { NavBar } from '../../components/NavBar'
 
 export default function NewBike() {
 
+    const [formValid, setFormValid] = useState(true);
     const [model, setModel] = useState('model')
     const [type, setType] = useState('type')
-    const [pricePerHour, setPricePerHour] = useState(10)
+    const [pricePerHour, setPricePerHour] = useState(0)
 
     const [mensagem, setMensagem] = useState('')
     const [open, setOpen] = useState()
@@ -41,7 +42,6 @@ export default function NewBike() {
         if (!/^\d+(\.\d{1,2})?$/.test(pricePerHour)) {
             return 'Invalid price format'
         }
-        return ''
     }
 
     const handleClose = (event, reason) => {
@@ -55,24 +55,29 @@ export default function NewBike() {
             'type': type,
             'pricePHour': pricePerHour
         }
+        if (data.type === "type" || data.model === "model" || data.pricePHour === 0){
+            setFormValid(false);
 
-        fetch('http://localhost:8080/bike', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => {
-            if (response.status === 200) {
-                //listTeams()
-                setMensagem('Bike cadastrada com sucesso')
+        }else{
+            setFormValid(true);
+            fetch('http://localhost:8080/bike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.status === 200) {
+                    //listTeams()
+                    setMensagem('Bike cadastrada com sucesso')
+                    setOpen(true)
+                    setBikeCreated(true)
+                }
+            }).catch(ex => {
+                setMensagem('Erro ao cadastrar bike')
                 setOpen(true)
-                setBikeCreated(true)
-            }
-        }).catch(ex => {
-            setMensagem('Erro ao cadastrar bike')
-            setOpen(true)
-        })
+            })
+        }
 
     }
 
@@ -110,6 +115,9 @@ export default function NewBike() {
 
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={handleClick}>Enviar</Button>
+                        {!formValid && (
+                        <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
+                        )}
                     </Grid>
                 </Grid>
 
