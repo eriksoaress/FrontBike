@@ -19,7 +19,7 @@ export default function Bike() {
 
     const [model, setModel] = useState('model')
     const [type, setType] = useState('type')
-    const [pricePerHour, setPricePerHour] = useState('10')
+    const [pricePerHour, setPricePerHour] = useState("undefined")
     const [statusUtil, setStatusUtil] = useState()
 
     const [mensagem, setMensagem] = useState('')
@@ -41,11 +41,32 @@ export default function Bike() {
 
     const handleStatusUtil = () => {
         // Lógica para alterar o valor da variável
-        if (statusUtil === 'WORKING') {
-          setStatusUtil('MAINTENANCE');
-        } else {
-          setStatusUtil('WORKING');
+        
+        const data = {
+            'model': model,
+            'type': type,
+            'pricePHour': pricePerHour,
+            'statusUtil': statusUtil
         }
+
+
+        fetch('http://localhost:8080/bike/'+id+'/utility', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.status === 200) {
+                setMensagem('Bike atualizada com sucesso')
+                setOpen(true)
+            }
+        }).catch(ex => {
+            setMensagem('Erro ao atualizar bike')
+            setOpen(true)
+        })
+        window.location.reload();
+
       };
 
     async function getBike() {
@@ -67,18 +88,15 @@ export default function Bike() {
         setPricePerHour(getBike.pricePHour);
         setModel(getBike.model);
         setStatusUtil(getBike.statusUtil);
-        console.log(statusUtil)
-
-    
-    
+        
     }
+
 
     useEffect(() => {
         getBike()
     }, []);
 
       
-
     const typeValidation = () => {
         if (type === null || type === '') {
             return 'Type is required'
@@ -129,6 +147,7 @@ export default function Bike() {
             setOpen(true)
         })
 
+
     }
 
     async function listUses() {
@@ -148,12 +167,18 @@ export default function Bike() {
     
     }
 
-    useEffect(() => {
-        listUses()
-    }, []);
+    // useEffect(() => {
+    //     listUses()
+    // }, []);
 
-    const switchChecked = statusUtil === 'WORKING';
 
+    
+    if (pricePerHour === undefined || model=== undefined || type===undefined || statusUtil=== undefined){
+        return null ;
+    }
+
+
+    
     return (
         <>
             <NavBar/>
@@ -186,7 +211,7 @@ export default function Bike() {
                         </FormControl>
                     </Grid>
                     <Grid ITEM XS={12}>
-                    <FormControlLabel control={<Switch checked={switchChecked} />} onClick={handleStatusUtil} />
+                    <FormControlLabel control={<Switch checked={statusUtil === "WORKING"} />} onClick={handleStatusUtil} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={handleClick}>Enviar</Button>
@@ -204,9 +229,6 @@ export default function Bike() {
             </Box>
 
         <Box>
-            <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                List bikes
-            </Typography>
 
             <Demo sx= {{width: "70%"}}>
                 <List sx={{ color:"rgba(242, 242, 242)"}}>
