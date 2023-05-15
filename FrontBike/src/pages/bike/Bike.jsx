@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { NavBar } from '../../components/NavBar';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText } from '@mui/material'
+import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText, Switch, FormControlLabel } from '@mui/material'
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -19,7 +19,8 @@ export default function Bike() {
 
     const [model, setModel] = useState('model')
     const [type, setType] = useState('type')
-    const [pricePerHour, setPricePerHour] = useState(10)
+    const [pricePerHour, setPricePerHour] = useState('10')
+    const [statusUtil, setStatusUtil] = useState()
 
     const [mensagem, setMensagem] = useState('')
     const [open, setOpen] = useState()
@@ -37,6 +38,46 @@ export default function Bike() {
         }
         return ''
     }
+
+    const handleStatusUtil = () => {
+        // Lógica para alterar o valor da variável
+        if (statusUtil === 'WORKING') {
+          setStatusUtil('MAINTENANCE');
+        } else {
+          setStatusUtil('WORKING');
+        }
+      };
+
+    async function getBike() {
+        let getBike = await fetch('http://localhost:8080/bike/'+id, {
+            method: 'GET'
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+            return []
+        }).catch(ex => {
+    
+            console.log(ex)
+            return []
+        })
+    
+        
+        setType(getBike.type);
+        setPricePerHour(getBike.pricePHour);
+        setModel(getBike.model);
+        setStatusUtil(getBike.statusUtil);
+        console.log(statusUtil)
+
+    
+    
+    }
+
+    useEffect(() => {
+        getBike()
+    }, []);
+
+      
 
     const typeValidation = () => {
         if (type === null || type === '') {
@@ -67,8 +108,10 @@ export default function Bike() {
         const data = {
             'model': model,
             'type': type,
-            'pricePHour': pricePerHour
+            'pricePHour': pricePerHour,
+            'statusUtil': statusUtil
         }
+
 
         fetch('http://localhost:8080/bike/'+id, {
             method: 'PUT',
@@ -109,6 +152,8 @@ export default function Bike() {
         listUses()
     }, []);
 
+    const switchChecked = statusUtil === 'WORKING';
+
     return (
         <>
             <NavBar/>
@@ -122,16 +167,17 @@ export default function Bike() {
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextField fullWidth id="standard-basic" label="Model" color="primary" variant="filled" onChange={e => setModel(e.target.value)} error={!!modelValidation()} helperText={modelValidation()} />
+                        <TextField fullWidth id="standard-basic" label={model} color="primary" variant="filled" onChange={e => setModel(e.target.value)} error={!!modelValidation()} helperText={modelValidation()} />
                     </Grid>
                     <Grid item xs={12}> 
-                        <TextField fullWidth id="standard-basic" label="Type" color="primary" variant="filled" onChange={e => setType(e.target.value)} error={!!typeValidation()} helperText={typeValidation()} />
+                        <TextField fullWidth id="standard-basic" label={type} color="primary" variant="filled" onChange={e => setType(e.target.value)} error={!!typeValidation()} helperText={typeValidation()} />
                     </Grid>
                     <Grid item xs={12}>             
                         <FormControl fullWidth variant="filled">
-                            <InputLabel htmlFor="filled-adornment-amount">Price per Hour</InputLabel>
+                            <InputLabel htmlFor="filled-adornment-amount" label='5'>Price per Hour</InputLabel>
                             <FilledInput
                                 id="filled-adornment-amount"
+                                defaultValue={pricePerHour}
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                 onChange={e => setPricePerHour(e.target.value)}
                                 error={!!pricePerHourValidation()}
@@ -139,7 +185,9 @@ export default function Bike() {
                             <FormHelperText error={!!pricePerHourValidation()}> {pricePerHourValidation()} </FormHelperText>
                         </FormControl>
                     </Grid>
-
+                    <Grid ITEM XS={12}>
+                    <FormControlLabel control={<Switch checked={switchChecked} />} onClick={handleStatusUtil} />
+                    </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={handleClick}>Enviar</Button>
                     </Grid>
