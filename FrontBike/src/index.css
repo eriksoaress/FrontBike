@@ -16,11 +16,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #f2cb05;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #f2cb05;
 }
 
 body {
@@ -47,7 +47,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #f2cb05;
 }
 button:focus,
 button:focus-visible {
@@ -60,7 +60,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #f2cb05;
   }
   button {
     background-color: #f9f9f9;
@@ -69,4 +69,29 @@ button:focus-visible {
 
 .sla{
   color:#e7f253
+}
+
+.card{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+.bi {
+margin: 1rem;
+}
+
+
+body{
+  background-color: #1a1a1a;
+}
+
+
+
+
+.page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10%;
 }
