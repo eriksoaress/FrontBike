@@ -27,8 +27,6 @@ const [pages, setPages] = useState();
 
 const currentBikes = data;
 
-
-
 async function deleteBikes(id,currentPage) {
     await fetch('http://localhost:8080/bike/'+id, {
         method: 'DELETE'    
@@ -52,16 +50,11 @@ async function listBikes() {
         console.log(ex)
         return []
     })
-
-    
     
     setPages(listBikes.totalPages);
     setData(listBikes.content);
 
-
-
 }
-
 
 async function listBikesPaginator(p) {
     let listBikes = await fetch('http://localhost:8080/bike?page='+p, {
@@ -81,22 +74,20 @@ async function listBikesPaginator(p) {
     setPage(listBikes.number)
     setPages(listBikes.totalPages);
 
-
 }
-
 
 useEffect(() => {
     listBikes()
 }, []);
 
-
-
   return (
     <>
     <NavBar/>
-    <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center"}}>
+        
+    <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center", minWidth: "100%", color: "black"
+              }}>
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            List bikes
+            Listagem de bikes
           </Typography>
 
           <Demo sx= {{width: "70%"}}>
@@ -129,15 +120,18 @@ useEffect(() => {
         
           </Demo>
 
-          <Stack spacing={2}>
-            <Pagination count={pages} shape="rounded" 
-            onChange={(e, p) => {
-
-                setPage(p-1);
-                listBikesPaginator(p-1);               
-            }}
+          <Box sx={{ paddingTop: '20px' }}>
+              <Stack spacing={2}>
+                <Pagination
+                  count={pages}
+                  shape="rounded"
+                  onChange={(e, p) => {
+                    setPage(p - 1);
+                    listBikesPaginator(p - 1);
+                  }}
                 />
-        </Stack>
+              </Stack>
+    </Box>
     </Box>
     </>
   );

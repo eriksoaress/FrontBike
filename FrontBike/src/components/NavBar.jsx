@@ -23,7 +23,6 @@ export const NavBar = function NavBar() {
     <AppBar position="static" sx={{ background: '#262626', color: '#f2cb05' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -39,7 +38,7 @@ export const NavBar = function NavBar() {
             }}
           >
             <Link to='/' >
-                LOGO
+                ZAMBALHETES
             </Link>
           </Typography>
           <Box sx={{ flexGrow: 1 }} />

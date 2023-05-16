@@ -16,7 +16,7 @@ import ListBikes from './pages/bike/ListBikes.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App/>,
   },
 
   {

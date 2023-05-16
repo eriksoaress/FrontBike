@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import logo from './assets/logo.jpeg'
 import './App.css'
 
 import {Link} from 'react-router-dom'
@@ -10,35 +9,26 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
+
     <>
+    
     <NavBar/>
       <div className="page">
         <div>
-          <a href="https://vitejs.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
+            <img src={logo} className="logo" />
         </div>
-        <h1>Vite + React</h1>
+        <h1 style={{color:"#f2cb05"}} >Zambalhetes</h1>
         <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
+         
 
-          <Link to='/' ><button color="inherit">Home </button></Link>
-          <Link to='/new' ><button color="inherit">Create Bike </button></Link>
-          <Link to='/list' ><button color="inherit">List Bikes </button></Link>
-          <Link to='/hello'><button color="inherit">Hello</button></Link>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test HMR
-          </p>
+          <Link to='/new' ><button color="inherit"className='bi'>Create Bike </button></Link>
+          <Link to='/list' ><button color="inherit"className='bi'>List Bikes </button></Link>
+          
         </div>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
+       
       </div>
+    
+
     </>
   )
 }

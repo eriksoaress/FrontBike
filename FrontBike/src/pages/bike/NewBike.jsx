@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText, Alert } from '@mui/material'
+import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText, Alert, Typography } from '@mui/material'
 import { Navigate } from 'react-router-dom'
 import { NavBar } from '../../components/NavBar'
 
@@ -83,7 +83,7 @@ export default function NewBike() {
             'type': type,
             'pricePHour': pricePerHour
         }
-        if (data.type === "type" || data.model === "model" || data.pricePHour === 0){
+        if (data.type === "type" || data.model === "model" || data.pricePHour === 0 || !!modelValidation() || !!typeValidation() || !!pricePerHourValidation()){
             setFormValid(false);
 
         }else{
@@ -112,23 +112,37 @@ export default function NewBike() {
 
     return (
         <>
-            <NavBar/>
-            <Box
-                sx={{
-                    mx: 'auto',
-                    marginTop: '200px',
-                    width: '40%'
-                }}
-            >
-
+            <NavBar />
+            <Box sx={{ mx: 'auto', mt: '5rem', width: '40%' }}>
+                <Typography variant="h4" sx={{ color: '#262626', mb: '2rem', fontWeight: 'bold' }}>
+                    Create a Bike
+                </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextField fullWidth id="standard-basic" label="Modelo" color="primary" variant="filled" onChange={e => setModel(e.target.value)} error={!!modelValidation()} helperText={modelValidation()} />
+                        <TextField
+                            fullWidth
+                            id="standard-basic"
+                            label="Model"
+                            color="primary"
+                            variant="filled"
+                            onChange={e => setModel(e.target.value)}
+                            error={!!modelValidation()}
+                            helperText={modelValidation()}
+                        />
                     </Grid>
-                    <Grid item xs={12}> 
-                        <TextField fullWidth id="standard-basic" label="Tipo" color="primary" variant="filled" onChange={e => setType(e.target.value)} error={!!typeValidation()} helperText={typeValidation()} />
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="standard-basic"
+                            label="Type"
+                            color="primary"
+                            variant="filled"
+                            onChange={e => setType(e.target.value)}
+                            error={!!typeValidation()}
+                            helperText={typeValidation()}
+                        />
                     </Grid>
-                    <Grid item xs={12}>             
+                    <Grid item xs={12}>
                         <FormControl fullWidth variant="filled">
                             <InputLabel htmlFor="filled-adornment-amount">Preço por Hora</InputLabel>
                             <FilledInput
@@ -137,30 +151,31 @@ export default function NewBike() {
                                 onChange={e => setPricePerHour(e.target.value)}
                                 error={!!pricePerHourValidation()}
                             />
-                            <FormHelperText error={!!pricePerHourValidation()}> {pricePerHourValidation()} </FormHelperText>
+                            <FormHelperText error={!!pricePerHourValidation()}>{pricePerHourValidation()}</FormHelperText>
                         </FormControl>
                     </Grid>
-
+    
                     <Grid item xs={12}>
-                        <Button variant="contained" onClick={handleClick}>Enviar</Button>
+                        <Button variant="contained" onClick={handleClick}>
+                            Enviar
+                        </Button>
                         {!formValid && (
-                        <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
+                            <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
                         )}
                     </Grid>
                 </Grid>
-
-
+    
                 <Snackbar
                     open={open}
                     autoHideDuration={6000}
                     onClose={handleClose}
                     message={mensagem}
                 />
-
-                {bikeCreated && <Navigate to='/list' /> }
-
+    
+                {bikeCreated && <Navigate to="/list" />}
             </Box>
         </>
-    )
+    );
+    
 
 }
