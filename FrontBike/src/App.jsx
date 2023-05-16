@@ -9,7 +9,9 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
+
     <>
+    
     <NavBar/>
       <div className="page">
         <div>
@@ -27,6 +29,8 @@ function App() {
         </div>
        
       </div>
+    
+
     </>
   )
 }
