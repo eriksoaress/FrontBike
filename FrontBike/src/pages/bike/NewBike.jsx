@@ -14,34 +14,62 @@ export default function NewBike() {
     const [open, setOpen] = useState()
     const [bikeCreated, setBikeCreated] = useState(false)
 
-    
+    const [modelError, setModelError] = useState(false)
+    const [modelErrorMessage, setModelErrorMessage] = useState('');
+    const [typeError, setTypeError] = useState(false)
+    const [typeErrorMessage, setTypeErrorMessage] = useState('');
+    const [priceError, setPriceError] = useState(false)
+    const [priceErrorMessage, setPriceErrorMessage] = useState('');
+
+
     const modelValidation = () => {
+        let errorMessage = '';
         if (model === null || model === '') {
-            return 'Model is required'
+          errorMessage = 'É necessário informar o modelo';
+        } else if (model.length < 3) {
+          errorMessage = 'O modelo deve ter no mínimo 3 caracteres';
         }
-        if (model.length < 3) {
-            return 'Model must be at least 3 characters'
+        
+        if (errorMessage !== modelErrorMessage) {
+          setModelErrorMessage(errorMessage);
+          setModelError(!!errorMessage);
         }
-        return ''
-    }
+        
+        return errorMessage;
+      };
 
     const typeValidation = () => {
+        let errorMessage = '';
         if (type === null || type === '') {
-            return 'Type is required'
+            errorMessage = 'É necessário informar o tipo'
         }
         if (type.length < 3) {
-            return 'Type must be at least 3 characters'
+            errorMessage = 'O tipo deve ter no mínimo 3 caracteres'
         }
-        return ''
+        
+        if (errorMessage !== typeErrorMessage) {
+            setTypeErrorMessage(errorMessage);
+            setTypeError(!!errorMessage);
+          }
+          
+          return errorMessage;
     }
 
     const pricePerHourValidation = () => {
+        let errorMessage = '';
         if (pricePerHour === null) {
-            return 'Price per Hour is required'
+            errorMessage = 'É necessário informar o Preço por Hora'
         }
         if (!/^\d+(\.\d{1,2})?$/.test(pricePerHour)) {
-            return 'Invalid price format'
+            errorMessage = 'Formato de preço inválido'
         }
+        
+        if (errorMessage !== priceErrorMessage) {
+            setPriceErrorMessage(errorMessage);
+            setPriceError(!!errorMessage);
+          }
+          
+          return errorMessage;
     }
 
     const handleClose = (event, reason) => {
@@ -116,7 +144,7 @@ export default function NewBike() {
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth variant="filled">
-                            <InputLabel htmlFor="filled-adornment-amount">Price per Hour</InputLabel>
+                            <InputLabel htmlFor="filled-adornment-amount">Preço por Hora</InputLabel>
                             <FilledInput
                                 id="filled-adornment-amount"
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
