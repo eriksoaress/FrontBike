@@ -94,7 +94,8 @@ useEffect(() => {
   return (
     <>
     <NavBar/>
-    <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center"}}>
+    <Box  sx={{width: "60rem", display: 'flex', justifyContent: 'center', flexDirection:"column", alignItems: "center",
+              }}>
           <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
             List bikes
           </Typography>

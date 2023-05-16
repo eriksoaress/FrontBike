@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { NavBar } from '../../components/NavBar';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, InputAdornment, FormHelperText, Switch, FormControlLabel, Alert } from '@mui/material'
+import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, InputAdornment, FormHelperText, Switch, FormControlLabel, Alert, Typography } from '@mui/material'
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -187,29 +187,39 @@ export default function Bike() {
 
     
     return (
-        <>
-            <NavBar/>
-            <Box
-                sx={{
-                    mx: 'auto',
-                    marginTop: '200px',
-                    width: '40%'
-                }}
-            >
-
+    <>
+        <NavBar />
+        <Box
+            sx={{
+                mx: 'auto',
+                marginTop: '5rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                paddingLeft: '5rem', // Add padding to the left side
+                paddingRight: '5rem', // Add padding to the right side
+            }}
+        >
+            <Box sx={{ width: '40%' }}>
+                <Typography variant="h4" component="h1" gutterBottom sx={{color:'#262626', fontWeight:'bold'}}>
+                    Edit Bike
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom sx={{color:'#262626'}}>
+                    Fill in the details to edit the bike:
+                </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         {!formValid && (
-                        <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
+                            <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
                         )}
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth id="standard-basic" label={model} color="primary" variant="filled" onChange={e => setModel(e.target.value)} error={!!modelValidation()} helperText={modelValidation()} />
                     </Grid>
-                    <Grid item xs={12}> 
+                    <Grid item xs={12}>
                         <TextField fullWidth id="standard-basic" label={type} color="primary" variant="filled" onChange={e => setType(e.target.value)} error={!!typeValidation()} helperText={typeValidation()} />
                     </Grid>
-                    <Grid item xs={12}>             
+                    <Grid item xs={12}>
                         <FormControl fullWidth variant="filled">
                             <InputLabel htmlFor="filled-adornment-amount" label='5'>Price per Hour</InputLabel>
                             <FilledInput
@@ -219,55 +229,61 @@ export default function Bike() {
                                 onChange={e => setPricePerHour(e.target.value)}
                                 error={!!pricePerHourValidation()}
                             />
-                            <FormHelperText error={!!pricePerHourValidation()}> {pricePerHourValidation()} </FormHelperText>
+                            <FormHelperText error={!!pricePerHourValidation()}>{pricePerHourValidation()}</FormHelperText>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                    <FormControlLabel control={<Switch checked={statusUtil === "WORKING"} />} onClick={handleStatusUtil} />
+                    <Grid item xs={4}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#262626' }}>
+                            Indisponível
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControlLabel control={<Switch checked={statusUtil === "WORKING"} />} onClick={handleStatusUtil} />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant="subtitle1" gutterBottom sx={{ color: '#262626' }}>
+                            Disponível
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={handleClick}>Enviar</Button>
                     </Grid>
                 </Grid>
-
-
-                <Snackbar
-                    open={open}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    message={mensagem}
-                />
-
             </Box>
 
-        <Box>
-
-            <Demo sx= {{width: "70%"}}>
-                <List sx={{ color:"rgba(242, 242, 242)"}}>
-                
-            {bikeUses && bikeUses.map(bike => (
-
-                <ListItem>
-                    <ListItemAvatar>
-
-                        <DirectionsBikeIcon style={{ color: "rgba(242, 159, 5)" }} />
-
-                    </ListItemAvatar>
-
-                    <ListItemText
-                    sx={{ color:"rgba(76, 76, 76)" }}
-                    primary= {bike.origem + ": " + bike.status}
-                    secondary={bike.diaHoraInicio}
-                    />
-                </ListItem>
-
-            ))}
-              
-            </List>
-        
-          </Demo>
+            <Box sx={{ width: '55%' }}>
+                <Typography variant="h4" component="h1" gutterBottom sx={{color:'#262626', fontWeight:'bold'}}>
+                    Bike Uses
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom sx={{color:'#262626'}}>
+                    List of bike uses:
+                </Typography>
+                <Demo>
+                    <List sx={{ color: "rgba(76, 76, 76)" }}>
+                        {bikeUses && bikeUses.map(bike => (
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <DirectionsBikeIcon style={{ color: "rgba(242, 159, 5)" }} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={bike.origem + ": " + bike.status}
+                                    secondary={bike.diaHoraInicio}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Demo>
+            </Box>
         </Box>
-        </>
-    )
+        <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            message={mensagem}
+        />
+    </>
+);
+   
+
 
 }
