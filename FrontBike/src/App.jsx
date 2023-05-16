@@ -21,10 +21,8 @@ function App() {
         <div className="card">
          
 
-          <Link to='/' ><button color="inherit" className='bi'>Home </button></Link>
           <Link to='/new' ><button color="inherit"className='bi'>Create Bike </button></Link>
           <Link to='/list' ><button color="inherit"className='bi'>List Bikes </button></Link>
-          <Link to='/hello'><button color="inherit"className='bi'>Hello</button></Link>
           
         </div>
        
