@@ -55,7 +55,7 @@ export default function NewBike() {
             'type': type,
             'pricePHour': pricePerHour
         }
-        if (data.type === "type" || data.model === "model" || data.pricePHour === 0){
+        if (data.type === "type" || data.model === "model" || data.pricePHour === 0 || !!modelValidation() || !!typeValidation() || !!pricePerHourValidation()){
             setFormValid(false);
 
         }else{

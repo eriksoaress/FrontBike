@@ -4,12 +4,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { NavBar } from '../../components/NavBar';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, OutlinedInput, InputAdornment, FormHelperText, Switch, FormControlLabel } from '@mui/material'
+import { Box, Button, Grid, Snackbar, TextField, FormControl, InputLabel, FilledInput, InputAdornment, FormHelperText, Switch, FormControlLabel, Alert } from '@mui/material'
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -17,6 +15,7 @@ const Demo = styled('div')(({ theme }) => ({
 
 export default function Bike() {
 
+    const [formValid, setFormValid] = useState(true);
     const [model, setModel] = useState('model')
     const [type, setType] = useState('type')
     const [pricePerHour, setPricePerHour] = useState("undefined")
@@ -49,23 +48,27 @@ export default function Bike() {
             'statusUtil': statusUtil
         }
 
-
-        fetch('http://localhost:8080/bike/'+id+'/utility', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => {
-            if (response.status === 200) {
-                setMensagem('Bike atualizada com sucesso')
+        if (data.type === "type" || data.model === "model" || data.pricePHour === 0 || !!modelValidation() || !!typeValidation() || !!pricePerHourValidation()){
+            setFormValid(false);
+        } else {
+            setFormValid(true);
+            fetch('http://localhost:8080/bike/'+id+'/utility', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.status === 200) {
+                    setMensagem('Bike atualizada com sucesso')
+                    setOpen(true)
+                }
+            }).catch(ex => {
+                setMensagem('Erro ao atualizar bike')
                 setOpen(true)
-            }
-        }).catch(ex => {
-            setMensagem('Erro ao atualizar bike')
-            setOpen(true)
-        })
-        window.location.reload();
+            })
+            window.location.reload();
+        }
 
       };
 
@@ -131,21 +134,25 @@ export default function Bike() {
         }
 
 
-        fetch('http://localhost:8080/bike/'+id, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(response => {
-            if (response.status === 200) {
-                setMensagem('Bike atualizada com sucesso')
+        if (data.type === "type" || data.model === "model" || data.pricePHour === 0 || !!modelValidation() || !!typeValidation() || !!pricePerHourValidation()){
+            setFormValid(false);
+        } else {
+            fetch('http://localhost:8080/bike/'+id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                if (response.status === 200) {
+                    setMensagem('Bike atualizada com sucesso')
+                    setOpen(true)
+                }
+            }).catch(ex => {
+                setMensagem('Erro ao atualizar bike')
                 setOpen(true)
-            }
-        }).catch(ex => {
-            setMensagem('Erro ao atualizar bike')
-            setOpen(true)
-        })
+            })
+        }
 
 
     }
@@ -167,9 +174,9 @@ export default function Bike() {
     
     }
 
-    // useEffect(() => {
-    //     listUses()
-    // }, []);
+    useEffect(() => {
+         listUses()
+    }, []);
 
 
     
@@ -192,6 +199,11 @@ export default function Bike() {
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
+                        {!formValid && (
+                        <Alert severity="error">Todos os campos devem ser preenchidos adequadamente.</Alert>
+                        )}
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField fullWidth id="standard-basic" label={model} color="primary" variant="filled" onChange={e => setModel(e.target.value)} error={!!modelValidation()} helperText={modelValidation()} />
                     </Grid>
                     <Grid item xs={12}> 
@@ -210,7 +222,7 @@ export default function Bike() {
                             <FormHelperText error={!!pricePerHourValidation()}> {pricePerHourValidation()} </FormHelperText>
                         </FormControl>
                     </Grid>
-                    <Grid ITEM XS={12}>
+                    <Grid item xs={12}>
                     <FormControlLabel control={<Switch checked={statusUtil === "WORKING"} />} onClick={handleStatusUtil} />
                     </Grid>
                     <Grid item xs={12}>
